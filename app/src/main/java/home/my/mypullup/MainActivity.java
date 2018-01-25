@@ -13,12 +13,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import home.my.mypullup.helper.InputFilterMinMax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +32,6 @@ import java.util.List;
  * A login screen that offers login via email/password.
  */
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -54,9 +54,8 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.morning1);
-//        populateAutoComplete();
-
+        mEmailView = (EditText) findViewById(R.id.morning1);
+        mEmailView.setFilters(new InputFilter[]{ new InputFilterMinMax(0, 12)});
         mPasswordView = (EditText) findViewById(R.id.password1);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+
     }
 
     @Override
@@ -205,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+//        mEmailView.setAdapter(adapter);
     }
 
 
