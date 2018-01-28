@@ -11,8 +11,10 @@
               tools:context="home.my.mypullup.MainActivity">
 
     <!-- Login progress -->
+    <!--android:visibility="gone"-->
+    <!--This view is invisible, and it doesn't take any space for layout purposes.-->
     <ProgressBar
-            android:id="@+id/login_progress"
+            android:id="@+id/save_progress"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,22 +22,31 @@
             android:visibility="gone"/>
 
     <ScrollView
-            android:id="@+id/login_form"
+            android:id="@+id/pullup_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <LinearLayout
-                android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/morning"
+                    android:shadowColor="#ff0000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="5"
+            />
+
             <LinearLayout
-                    android:id="@+id/email_login_form2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="100">
+                    android:weightSum="100"
+                    android:baselineAligned="false">
 
                 <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
@@ -46,7 +57,7 @@
                             android:id="@+id/morning1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_morning1"
+                            android:hint="@string/attempt1"
                             android:inputType="number"
                             android:maxLines="1"
                     />
@@ -62,10 +73,7 @@
                             android:id="@+id/morning2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_morning2"
-                            android:imeActionId="@+id/login"
-                            android:imeActionLabel="@string/action_sign_in_short"
-                            android:imeOptions="actionUnspecified"
+                            android:hint="@string/attempt2"
                             android:inputType="number"
                             android:maxLines="1"
                     />
@@ -75,56 +83,70 @@
             </LinearLayout>
 
             <Button
-                    android:id="@+id/sign_in_morning_button"
+                    android:id="@+id/save_morning_button"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold"/>
-
-            <android.support.design.widget.TextInputLayout
+                    android:text="@string/action_save_result"
+                    android:textStyle="bold" android:textSize="10sp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evening"
+                    android:shadowColor="#ff0000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="5"
+            />
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    android:baselineAligned="false">
 
-                <EditText
-                        android:id="@+id/password1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:imeActionId="@+id/login"
-                        android:imeActionLabel="@string/action_sign_in_short"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                />
+                <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content">
 
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <EditText
+                            android:id="@+id/evening1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/attempt1"
+                            android:inputType="number"
+                            android:maxLines="1"
+                    />
 
-                <EditText
-                        android:id="@+id/password2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:imeActionId="@+id/login"
-                        android:imeActionLabel="@string/action_sign_in_short"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                />
+                </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="wrap_content">
+
+                    <EditText
+                            android:id="@+id/evening2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/attempt2"
+                            android:inputType="number"
+                            android:maxLines="1"
+                    />
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
             <Button
-                    android:id="@+id/email_sign_in_button"
+                    android:id="@+id/save_evening_button"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold"/>
+                    android:text="@string/action_save_result"
+                    android:textStyle="bold" android:textSize="10sp"/>
 
 
         </LinearLayout>
