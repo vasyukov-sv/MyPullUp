@@ -15,6 +15,9 @@ import android.widget.Toast;
 import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
+import home.my.mypullup.task.AttemptLoadTask;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     public static final int DATABASE_VERSION = 1;
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_VALUE_ATTEMPT = 12;
 
     private AttemptSaveTask mAuthTask = null;
+    private AttemptLoadTask attemptLoadTask = null;
+
 
     private EditText mMorning1;
     private EditText mMorning2;
@@ -47,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.save_morning_button).setOnClickListener(view -> saveRow(mMorning1, mMorning2));
         findViewById(R.id.save_evening_button).setOnClickListener(view -> saveRow(mEvening1, mEvening2));
 
+
+
+
         mProgressView = findViewById(R.id.save_progress);
 
         mMorning2.setOnEditorActionListener(this::onEditorAction);
@@ -55,8 +63,20 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         dbHelper.setDB(dbHelper.getWritableDatabase());
 
-        Attempt attempt = dbHelper.getAttempt();
+        loadAttempt();
+    }
 
+    private void loadAttempt() {
+        if (attemptLoadTask != null) {
+            return;
+        }
+        attemptLoadTask = new AttemptLoadTask(dbHelper);
+        Attempt attempt = null;
+        try {
+            attempt = attemptLoadTask.execute((Void) null).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         if (attempt !=null) {
             mMorning1.setText(attempt.getMorning1());
             mMorning2.setText(attempt.getMorning2());
