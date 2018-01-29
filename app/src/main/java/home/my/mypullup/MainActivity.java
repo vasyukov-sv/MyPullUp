@@ -6,14 +6,22 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.helper.Utils;
+import home.my.mypullup.obj.Attempt;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int DATABASE_VERSION = 1;
+    public static final String TABLE = "tScore";
     private static final int MAX_VALUE_ATTEMPT = 12;
 
-    private UserLoginTask mAuthTask = null;
+    private AttemptSaveTask mAuthTask = null;
 
     private EditText mMorning1;
     private EditText mMorning2;
@@ -21,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEvening2;
 
     private View mProgressView;
+
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +48,30 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.save_evening_button).setOnClickListener(view -> saveRow(mEvening1, mEvening2));
 
         mProgressView = findViewById(R.id.save_progress);
+
+        mMorning2.setOnEditorActionListener(this::onEditorAction);
+        mEvening2.setOnEditorActionListener(this::onEditorAction);
+
+        dbHelper = new DBHelper(this);
+        dbHelper.setDB(dbHelper.getWritableDatabase());
+
+        Attempt attemptMorning = dbHelper.getAttempt(true);
+        Attempt attemptEvening = dbHelper.getAttempt(false);
+
+        if (attemptMorning !=null) {
+            mEvening1.setText(attemptEvening.getAttempt1());
+            mEvening2.setText(attemptEvening.getAttempt2());
+        }
+
+        if (attemptMorning !=null) {
+            mMorning1.setText(attemptMorning.getAttempt1());
+            mMorning2.setText(attemptMorning.getAttempt2());
+        }
     }
 
     private void saveRow(EditText attempt1, EditText attempt2) {
+        Toast.makeText(getApplicationContext(), "saveRow", Toast.LENGTH_SHORT).show();
+
         String value1 = attempt1.getText().toString();
         String value2 = attempt2.getText().toString();
         if (mAuthTask != null) {
@@ -67,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(value1, value2);
+            mAuthTask = new AttemptSaveTask(value1, value2);
             mAuthTask.execute((Void) null);
         }
     }
@@ -84,13 +115,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId != EditorInfo.IME_ACTION_DONE) {
+            return false;
+        }
+        switch (v.getId()) {
+            case R.id.morning2:
+                saveRow(mMorning1, mMorning2);
+                break;
+            case R.id.evening2:
+                saveRow(mEvening1, mEvening2);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+    public class AttemptSaveTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
+        AttemptSaveTask(String email, String password) {
             mEmail = email;
             mPassword = password;
         }
