@@ -55,17 +55,13 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         dbHelper.setDB(dbHelper.getWritableDatabase());
 
-        Attempt attemptMorning = dbHelper.getAttempt(true);
-        Attempt attemptEvening = dbHelper.getAttempt(false);
+        Attempt attempt = dbHelper.getAttempt();
 
-        if (attemptMorning !=null) {
-            mEvening1.setText(attemptEvening.getAttempt1());
-            mEvening2.setText(attemptEvening.getAttempt2());
-        }
-
-        if (attemptMorning !=null) {
-            mMorning1.setText(attemptMorning.getAttempt1());
-            mMorning2.setText(attemptMorning.getAttempt2());
+        if (attempt !=null) {
+            mMorning1.setText(attempt.getMorning1());
+            mMorning2.setText(attempt.getMorning2());
+            mEvening1.setText(attempt.getEvening1());
+            mEvening2.setText(attempt.getEvening2());
         }
     }
 

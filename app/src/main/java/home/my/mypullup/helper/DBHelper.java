@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE + "(id integer primary key autoincrement,morning1 integer,morning2 integer,evening1 integer,evening2 integer);");
+        db.execSQL("CREATE TABLE " + TABLE + "(id integer primary key autoincrement, date text,morning1 integer,morning2 integer,evening1 integer,evening2 integer);");
     }
 
     @Override
@@ -30,22 +30,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void delete(int id) {
-        db.delete(TABLE, "id=" + id, null);
+    public void delete(String date) {
+        db.delete(TABLE, "date=" + date, null);
     }
 
-    public void insertMorning(Attempt attempt) {
+    public void addAttempt(Attempt attempt) {
         ContentValues cv = new ContentValues();
-        cv.put("morning1", attempt.getAttempt1());
-        cv.put("morning2", attempt.getAttempt2());
-        db.insert(TABLE, null, cv);
-    }
-
-
-    public void insertEvening(Attempt attempt) {
-        ContentValues cv = new ContentValues();
-        cv.put("evening1", attempt.getAttempt1());
-        cv.put("evening2", attempt.getAttempt2());
+        cv.put("morning1", attempt.getMorning1());
+        cv.put("morning2", attempt.getMorning2());
         db.insert(TABLE, null, cv);
     }
 
@@ -53,16 +45,18 @@ public class DBHelper extends SQLiteOpenHelper {
         this.db = db;
     }
 
-    public Attempt getAttempt(boolean isMorning) {
+    public Attempt getAttempt() {
         Cursor cursor = db.query(TABLE, null, "date = date('now', 'localtime')", null, null, null, null);
         if (cursor == null) {
             return null;
         }
         cursor.moveToFirst();
 
-        int attempt1Index = isMorning ? cursor.getColumnIndex("morning1") : cursor.getColumnIndex("evening1");
-        int attempt2Index = isMorning ? cursor.getColumnIndex("morning2") : cursor.getColumnIndex("evening2");
-        Attempt attempt = new Attempt(cursor.getInt(attempt1Index), cursor.getInt(attempt2Index));
+        Attempt attempt = new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")),
+                cursor.getInt(cursor.getColumnIndex("morning2")),
+                cursor.getInt(cursor.getColumnIndex("evening1")),
+                cursor.getInt(cursor.getColumnIndex("evening2"))
+        );
         cursor.close();
         return attempt;
     }
