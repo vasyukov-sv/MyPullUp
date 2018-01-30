@@ -1,19 +1,18 @@
 package home.my.mypullup.obj;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class Attempt {
-    private int morning1;
-    private int morning2;
-    private int evening1;
-    private int evening2;
+    private final Integer morning1;
+    private final Integer morning2;
+    private final Integer evening1;
+    private final Integer evening2;
 
-    private String date;
+    private final String date;
 
-    public Attempt(int morning1, int morning2, int evening1, int evening2) {
+    public Attempt(Integer morning1, Integer morning2, Integer evening1, Integer evening2) {
         this.morning1 = morning1;
         this.morning2 = morning2;
         this.evening1 = evening1;
@@ -21,43 +20,24 @@ public class Attempt {
         this.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    public int getMorning1() {
+    public Integer getMorning1() {
         return morning1;
     }
 
-    public void setMorning1(int morning1) {
-        this.morning1 = morning1;
-    }
-
-    public int getMorning2() {
+    public Integer getMorning2() {
         return morning2;
     }
 
-    public void setMorning2(int morning2) {
-        this.morning2 = morning2;
-    }
-
-    public int getEvening1() {
+    public Integer getEvening1() {
         return evening1;
     }
 
-    public void setEvening1(int evening1) {
-        this.evening1 = evening1;
-    }
-
-    public int getEvening2() {
+    public Integer getEvening2() {
         return evening2;
-    }
-
-    public void setEvening2(int evening2) {
-        this.evening2 = evening2;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

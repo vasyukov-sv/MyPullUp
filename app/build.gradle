@@ -6,10 +6,12 @@ android {
     defaultConfig {
         applicationId "home.my.mypullup"
         minSdkVersion 24
+        //noinspection OldTargetApi
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //noinspection GroovyMissingReturnStatement
         jackOptions {
             enabled true
         }

@@ -2,8 +2,7 @@
     <string name="app_name">MyPullUp</string>
     <string name="attempt1">1 попытка</string>
     <string name="attempt2">2 попытка</string>
-    <string name="action_save_result">Сохранить результат</string>
+    <string name="action_save_result_morming">(утро)  Сохранить результат</string>
+    <string name="action_save_result_evening">(вечер) Сохранить результат</string>
     <string name="error_field_required">Поле обязательно</string>
-    <string name="morning">Утро</string>
-    <string name="evening">Вечер</string>
 </resources>

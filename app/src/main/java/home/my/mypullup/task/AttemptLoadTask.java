@@ -5,10 +5,18 @@ import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.obj.Attempt;
 
 public class AttemptLoadTask extends AsyncTask<Void, Void, Attempt> {
-    private DBHelper dbHelper;
+    private final DBHelper dbHelper;
+    private final AsyncResponse delegate;
 
-    public AttemptLoadTask(DBHelper dbHelper) {
+    public AttemptLoadTask(DBHelper dbHelper, AsyncResponse delegate) {
         this.dbHelper = dbHelper;
+        this.delegate = delegate;
+    }
+
+    @Override
+    protected void onPostExecute(Attempt attempt) {
+        super.onPostExecute(attempt);
+        delegate.onLoadAttempt(attempt);
     }
 
     @Override

@@ -2,31 +2,27 @@ package home.my.mypullup;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
+import home.my.mypullup.task.AsyncResponse;
 import home.my.mypullup.task.AttemptLoadTask;
+import home.my.mypullup.task.AttemptSaveTask;
 
-import java.util.concurrent.ExecutionException;
-
-public class MainActivity extends AppCompatActivity {
-    public static final int DATABASE_VERSION = 1;
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
+    public static final int DATABASE_VERSION = 2;
     public static final String TABLE = "tScore";
     private static final int MAX_VALUE_ATTEMPT = 12;
 
-    private AttemptSaveTask mAuthTask = null;
+    private AttemptSaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
-
 
     private EditText mMorning1;
     private EditText mMorning2;
@@ -49,20 +45,18 @@ public class MainActivity extends AppCompatActivity {
 
         Utils.setMaxValue(MAX_VALUE_ATTEMPT, new EditText[]{mMorning1, mMorning2, mEvening1, mEvening2});
 
-        findViewById(R.id.save_morning_button).setOnClickListener(view -> saveRow(mMorning1, mMorning2));
-        findViewById(R.id.save_evening_button).setOnClickListener(view -> saveRow(mEvening1, mEvening2));
-
-
+        findViewById(R.id.save_morning_button).setOnClickListener(view -> saveRow(true));
+        findViewById(R.id.save_evening_button).setOnClickListener(view -> saveRow(false));
 
 
         mProgressView = findViewById(R.id.save_progress);
 
-        mMorning2.setOnEditorActionListener(this::onEditorAction);
-        mEvening2.setOnEditorActionListener(this::onEditorAction);
+        mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
+        mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
 
         dbHelper = new DBHelper(this);
         dbHelper.setDB(dbHelper.getWritableDatabase());
-//        dbHelper.addAttempt(new Attempt(2,3,4,5));
+        dbHelper.addAttempt(new Attempt(2, 3, 4, 5));
         loadAttempt();
     }
 
@@ -71,29 +65,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         showProgress(true);
-        attemptLoadTask = new AttemptLoadTask(dbHelper);
-        Attempt attempt = null;
-        try {
-            attempt = attemptLoadTask.execute((Void) null).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        if (attempt !=null) {
-            mMorning1.setText(attempt.getMorning1());
-            mMorning2.setText(attempt.getMorning2());
-            mEvening1.setText(attempt.getEvening1());
-            mEvening2.setText(attempt.getEvening2());
-        }
+        attemptLoadTask = new AttemptLoadTask(dbHelper, this);
+        attemptLoadTask.execute((Void) null);
     }
 
-    private void saveRow(EditText attempt1, EditText attempt2) {
-        Toast.makeText(getApplicationContext(), "saveRow", Toast.LENGTH_SHORT).show();
+    private void saveRow(boolean isMorning) {
+        if (attemptSaveTask != null) {
+            return;
+        }
+
+        EditText attempt1 = isMorning ? mMorning1 : mEvening1;
+        EditText attempt2 = isMorning ? mMorning2 : mEvening2;
 
         String value1 = attempt1.getText().toString();
         String value2 = attempt2.getText().toString();
-        if (mAuthTask != null) {
-            return;
-        }
+
         boolean cancel = false;
         View focusView = null;
 
@@ -115,8 +101,10 @@ public class MainActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new AttemptSaveTask(value1, value2);
-            mAuthTask.execute((Void) null);
+            attemptSaveTask = new AttemptSaveTask(dbHelper, this);
+            Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null)
+                    : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
+            attemptSaveTask.execute(attempt);
         }
     }
 
@@ -132,16 +120,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    private boolean onEditorAction(TextView v, int actionId) {
         if (actionId != EditorInfo.IME_ACTION_DONE) {
             return false;
         }
-        switch (v.getId()) {
+        int i = v.getId();
+        switch (i) {
             case R.id.morning2:
-                saveRow(mMorning1, mMorning2);
+                saveRow(true);
                 break;
             case R.id.evening2:
-                saveRow(mEvening1, mEvening2);
+                saveRow(false);
                 break;
             default:
                 return false;
@@ -149,55 +138,19 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onLoadAttempt(Attempt attempt) {
+        mMorning1.setText(attempt.getMorning1());
+        mMorning2.setText(attempt.getMorning2());
+        mEvening1.setText(attempt.getEvening1());
+        mEvening2.setText(attempt.getEvening2());
+        attemptLoadTask = null;
+        showProgress(false);
+    }
 
-    public class AttemptSaveTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        AttemptSaveTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+    @Override
+    public void onSaveAttempt() {
+        attemptSaveTask = null;
+        showProgress(false);
     }
 }
-

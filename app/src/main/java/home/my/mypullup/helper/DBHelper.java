@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE + "(id integer primary key autoincrement, date text,morning1 integer,morning2 integer,evening1 integer,evening2 integer);");
+        db.execSQL("CREATE TABLE " + TABLE + "(id integer primary key autoincrement, date text ,morning1 integer,morning2 integer,evening1 integer,evening2 integer, CONSTRAINT date_unique UNIQUE (date));");
     }
 
     @Override
@@ -30,18 +30,25 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void delete(String date) {
-        db.delete(TABLE, "date=" + date, null);
-    }
-
     public void addAttempt(Attempt attempt) {
         ContentValues cv = new ContentValues();
-        cv.put("morning1", attempt.getMorning1());
-        cv.put("morning2", attempt.getMorning2());
-        cv.put("evening1", attempt.getEvening1());
-        cv.put("evening2", attempt.getEvening2());
+        if (attempt.getMorning1() != null) {
+            cv.put("morning1", attempt.getMorning1());
+        }
+        if (attempt.getMorning2() != null) {
+            cv.put("morning2", attempt.getMorning2());
+        }
+        if (attempt.getEvening1() != null) {
+            cv.put("evening1", attempt.getEvening1());
+        }
+        if (attempt.getEvening2() != null) {
+            cv.put("evening2", attempt.getEvening2());
+        }
         cv.put("date", attempt.getDate());
-        db.insert(TABLE, null, cv);
+
+        if (db.insertWithOnConflict(TABLE, null, cv, SQLiteDatabase.CONFLICT_IGNORE) == -1) {
+            db.update(TABLE, cv, "date =?", new String[]{attempt.getDate()});
+        }
     }
 
     public void setDB(SQLiteDatabase db) {
