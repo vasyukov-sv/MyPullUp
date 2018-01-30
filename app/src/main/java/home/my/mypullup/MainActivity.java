@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
         dbHelper.setDB(dbHelper.getWritableDatabase());
-
+//        dbHelper.addAttempt(new Attempt(2,3,4,5));
         loadAttempt();
     }
 
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         if (attemptLoadTask != null) {
             return;
         }
+        showProgress(true);
         attemptLoadTask = new AttemptLoadTask(dbHelper);
         Attempt attempt = null;
         try {

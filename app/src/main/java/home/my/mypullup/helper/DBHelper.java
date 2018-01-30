@@ -38,6 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("morning1", attempt.getMorning1());
         cv.put("morning2", attempt.getMorning2());
+        cv.put("evening1", attempt.getEvening1());
+        cv.put("evening2", attempt.getEvening2());
+        cv.put("date", attempt.getDate());
         db.insert(TABLE, null, cv);
     }
 
@@ -47,16 +50,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Attempt getAttempt() {
         Cursor cursor = db.query(TABLE, null, "date = date('now', 'localtime')", null, null, null, null);
-        if (cursor == null) {
+        if (cursor == null || !cursor.moveToFirst()) {
             return null;
         }
-        cursor.moveToFirst();
 
-        Attempt attempt = new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")),
-                cursor.getInt(cursor.getColumnIndex("morning2")),
-                cursor.getInt(cursor.getColumnIndex("evening1")),
-                cursor.getInt(cursor.getColumnIndex("evening2"))
-        );
+        Attempt attempt = new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")), cursor.getInt(cursor.getColumnIndex("morning2")), cursor.getInt(cursor.getColumnIndex("evening1")), cursor.getInt(cursor.getColumnIndex("evening2")));
         cursor.close();
         return attempt;
     }
