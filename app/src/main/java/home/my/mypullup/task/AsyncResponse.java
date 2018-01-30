@@ -6,4 +6,6 @@ public interface AsyncResponse {
     void onLoadAttempt(Attempt attempt);
 
     void onSaveAttempt();
+
+    void onLoadAnalitics(String result);
 }

@@ -16,10 +16,13 @@ import home.my.mypullup.task.AsyncResponse;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.AttemptSaveTask;
 
+import static java.util.Optional.ofNullable;
+
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String TABLE = "tScore";
     private static final int MAX_VALUE_ATTEMPT = 12;
+    public static final int DAYS_AGO = 10;
 
     private AttemptSaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
         dbHelper = new DBHelper(this);
         dbHelper.setDB(dbHelper.getWritableDatabase());
-        dbHelper.addAttempt(new Attempt(2, 3, 4, 5));
+//        dbHelper.addAttempt(new Attempt(2, 3, 4, 5));
         loadAttempt();
     }
 
@@ -102,8 +105,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             // perform the user login attempt.
             showProgress(true);
             attemptSaveTask = new AttemptSaveTask(dbHelper, this);
-            Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null)
-                    : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
+            Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
             attemptSaveTask.execute(attempt);
         }
     }
@@ -140,10 +142,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void onLoadAttempt(Attempt attempt) {
-        mMorning1.setText(attempt.getMorning1());
-        mMorning2.setText(attempt.getMorning2());
-        mEvening1.setText(attempt.getEvening1());
-        mEvening2.setText(attempt.getEvening2());
+        if (attempt != null) {
+            mMorning1.setText(String.format("%s", ofNullable(attempt.getMorning1().toString()).orElse("")));
+            mMorning2.setText(String.format("%s", ofNullable(attempt.getMorning2().toString()).orElse("")));
+            mEvening1.setText(String.format("%s", ofNullable(attempt.getEvening1().toString()).orElse("")));
+            mEvening2.setText(String.format("%s", ofNullable(attempt.getEvening2().toString()).orElse("")));
+        }
         attemptLoadTask = null;
         showProgress(false);
     }
@@ -152,5 +156,10 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public void onSaveAttempt() {
         attemptSaveTask = null;
         showProgress(false);
+    }
+
+    @Override
+    public void onLoadAnalitics(String result) {
+
     }
 }

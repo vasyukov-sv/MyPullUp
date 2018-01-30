@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import home.my.mypullup.obj.Attempt;
 
-import static home.my.mypullup.MainActivity.DATABASE_VERSION;
-import static home.my.mypullup.MainActivity.TABLE;
+import java.util.ArrayList;
+import java.util.List;
+
+import static home.my.mypullup.MainActivity.*;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -61,9 +63,27 @@ public class DBHelper extends SQLiteOpenHelper {
             return null;
         }
 
+
         Attempt attempt = new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")), cursor.getInt(cursor.getColumnIndex("morning2")), cursor.getInt(cursor.getColumnIndex("evening1")), cursor.getInt(cursor.getColumnIndex("evening2")));
         cursor.close();
         return attempt;
+    }
+
+    public List<Attempt> getLastAttempts() {
+
+        List<Attempt> attempts = new ArrayList<>();
+        Cursor cursor = db.query(TABLE, null, "date > date('now', '-" + DAYS_AGO + " day','localtime')", null, null, null, "date");
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null;
+        }
+
+        while (!cursor.isAfterLast()) {
+            attempts.add(new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")), cursor.getInt(cursor.getColumnIndex("morning2")), cursor.getInt(cursor.getColumnIndex("evening1")), cursor.getInt(cursor.getColumnIndex("evening2"))));
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return attempts;
     }
 
 }
