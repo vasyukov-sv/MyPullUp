@@ -11,7 +11,9 @@ import home.my.mypullup.obj.Attempt;
 import java.util.ArrayList;
 import java.util.List;
 
-import static home.my.mypullup.MainActivity.*;
+import static home.my.mypullup.fragment.EnterResult.DATABASE_VERSION;
+import static home.my.mypullup.fragment.EnterResult.DAYS_AGO;
+import static home.my.mypullup.fragment.EnterResult.TABLE;
 
 public class DBHelper extends SQLiteOpenHelper {
 

@@ -5,10 +5,10 @@ import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.obj.Attempt;
 
 public class AttemptSaveTask extends AsyncTask<Attempt, Void, Void> {
-    private final AsyncResponse delegate;
+    private final AsyncResponseEnter delegate;
     private final DBHelper dbHelper;
 
-    public AttemptSaveTask(DBHelper dbHelper, AsyncResponse delegate) {
+    public AttemptSaveTask(DBHelper dbHelper, AsyncResponseEnter delegate) {
         this.delegate = delegate;
         this.dbHelper = dbHelper;
     }

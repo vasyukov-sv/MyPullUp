@@ -2,7 +2,13 @@
     <string name="app_name">MyPullUp</string>
     <string name="attempt1">1 попытка</string>
     <string name="attempt2">2 попытка</string>
-    <string name="action_save_result_morming">(утро)  Сохранить результат</string>
+    <string name="action_save_result_morming">(утро) Сохранить результат</string>
     <string name="action_save_result_evening">(вечер) Сохранить результат</string>
     <string name="error_field_required">Поле обязательно</string>
+    <string name="tab_enter">Ввод</string>
+    <string name="last10">Last 10</string>
+    <string name="graph">График</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

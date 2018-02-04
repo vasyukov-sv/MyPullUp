@@ -1,29 +1,36 @@
-package home.my.mypullup;
+package home.my.mypullup.fragment;
+
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import home.my.mypullup.R;
 import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
-import home.my.mypullup.task.AsyncResponse;
+import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.AttemptSaveTask;
 
 import static java.util.Optional.ofNullable;
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class EnterResult extends Fragment implements AsyncResponseEnter {
     public static final int DATABASE_VERSION = 3;
     public static final String TABLE = "tScore";
-    private static final int MAX_VALUE_ATTEMPT = 12;
     public static final int DAYS_AGO = 10;
-
+    private static final int MAX_VALUE_ATTEMPT = 12;
     private AttemptSaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
 
@@ -36,30 +43,29 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     private DBHelper dbHelper;
 
+    public EnterResult() {
+
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mMorning1 = (EditText) findViewById(R.id.morning1);
-        mMorning2 = (EditText) findViewById(R.id.morning2);
-        mEvening1 = (EditText) findViewById(R.id.evening1);
-        mEvening2 = (EditText) findViewById(R.id.evening2);
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mMorning1 = (EditText) getView().findViewById(R.id.morning1);
+        mMorning2 = (EditText) getView().findViewById(R.id.morning2);
+        mEvening1 = (EditText) getView().findViewById(R.id.evening1);
+        mEvening2 = (EditText) getView().findViewById(R.id.evening2);
         Utils.setMaxValue(MAX_VALUE_ATTEMPT, new EditText[]{mMorning1, mMorning2, mEvening1, mEvening2});
 
-        findViewById(R.id.save_morning_button).setOnClickListener(view -> saveRow(true));
-        findViewById(R.id.save_evening_button).setOnClickListener(view -> saveRow(false));
+        getView().findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(true));
+        getView().findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(false));
 
-
-        mProgressView = findViewById(R.id.save_progress);
+        mProgressView = getView().findViewById(R.id.save_progress);
 
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
 
-        dbHelper = new DBHelper(this);
+        dbHelper = new DBHelper(getActivity());
         dbHelper.setDB(dbHelper.getWritableDatabase());
-//        dbHelper.addAttempt(new Attempt(2, 3, 4, 5));
         loadAttempt();
     }
 
@@ -70,6 +76,25 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         showProgress(true);
         attemptLoadTask = new AttemptLoadTask(dbHelper, this);
         attemptLoadTask.execute((Void) null);
+    }
+
+
+    private boolean onEditorAction(TextView v, int actionId) {
+        if (actionId != EditorInfo.IME_ACTION_DONE) {
+            return false;
+        }
+        int i = v.getId();
+        switch (i) {
+            case R.id.morning2:
+                saveRow(true);
+                break;
+            case R.id.evening2:
+                saveRow(false);
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     private void saveRow(boolean isMorning) {
@@ -110,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         }
     }
 
-
     private void showProgress(final boolean show) {
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -122,22 +146,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         });
     }
 
-    private boolean onEditorAction(TextView v, int actionId) {
-        if (actionId != EditorInfo.IME_ACTION_DONE) {
-            return false;
-        }
-        int i = v.getId();
-        switch (i) {
-            case R.id.morning2:
-                saveRow(true);
-                break;
-            case R.id.evening2:
-                saveRow(false);
-                break;
-            default:
-                return false;
-        }
-        return true;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_main, container, false);
     }
 
     @Override
@@ -156,10 +167,5 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public void onSaveAttempt() {
         attemptSaveTask = null;
         showProgress(false);
-    }
-
-    @Override
-    public void onLoadAnalitics(String result) {
-
     }
 }

@@ -10,9 +10,9 @@ import static java.util.Optional.ofNullable;
 
 public class AttemptLoadAnaliticTask extends AsyncTask<Void, Void, String> {
     private final DBHelper dbHelper;
-    private final AsyncResponse delegate;
+    private final AsyncResponseEnter delegate;
 
-    public AttemptLoadAnaliticTask(DBHelper dbHelper, AsyncResponse delegate) {
+    public AttemptLoadAnaliticTask(DBHelper dbHelper, AsyncResponseEnter delegate) {
         this.dbHelper = dbHelper;
         this.delegate = delegate;
     }
@@ -30,7 +30,7 @@ public class AttemptLoadAnaliticTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        delegate.onLoadAnalitics(result);
+//        delegate.onLoadAnalitics(result);
     }
 
     @Override

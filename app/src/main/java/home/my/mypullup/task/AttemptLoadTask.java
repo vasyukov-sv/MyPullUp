@@ -6,9 +6,9 @@ import home.my.mypullup.obj.Attempt;
 
 public class AttemptLoadTask extends AsyncTask<Void, Void, Attempt> {
     private final DBHelper dbHelper;
-    private final AsyncResponse delegate;
+    private final AsyncResponseEnter delegate;
 
-    public AttemptLoadTask(DBHelper dbHelper, AsyncResponse delegate) {
+    public AttemptLoadTask(DBHelper dbHelper, AsyncResponseEnter delegate) {
         this.dbHelper = dbHelper;
         this.delegate = delegate;
     }

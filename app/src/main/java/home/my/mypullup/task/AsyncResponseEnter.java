@@ -2,10 +2,8 @@ package home.my.mypullup.task;
 
 import home.my.mypullup.obj.Attempt;
 
-public interface AsyncResponse {
+public interface AsyncResponseEnter {
     void onLoadAttempt(Attempt attempt);
 
     void onSaveAttempt();
-
-    void onLoadAnalitics(String result);
 }
