@@ -6,7 +6,6 @@
     <string name="action_save_result_evening">(вечер) Сохранить результат</string>
     <string name="error_field_required">Поле обязательно</string>
     <string name="tab_enter">Ввод</string>
-    <string name="last10">Last 10</string>
+    <string name="last10">Результаты</string>
     <string name="graph">График</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

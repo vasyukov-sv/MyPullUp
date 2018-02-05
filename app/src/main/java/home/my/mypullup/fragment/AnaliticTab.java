@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import home.my.mypullup.R;
-import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.obj.Analitic;
 import home.my.mypullup.task.AsyncResponseAnalitic;
 import home.my.mypullup.task.AttemptLoadAnaliticTask;
@@ -22,7 +21,6 @@ import static java.util.Optional.ofNullable;
  * A simple {@link Fragment} subclass.
  */
 public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
-    private DBHelper dbHelper;
 
     private TextView avgWeek;
     private TextView avgMonth;
@@ -44,8 +42,6 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dbHelper = new DBHelper(getActivity());
-        dbHelper.setDB(dbHelper.getWritableDatabase());
 
         avgWeek = (TextView) getView().findViewById(R.id.avgweek);
         avgMonth = (TextView) getView().findViewById(R.id.avgmonth);
@@ -56,7 +52,7 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
 
         lastAttempts = (TextView) getView().findViewById(R.id.lastattempts);
 
-        loadAnalitic();
+//        loadAnalitic();
     }
 
     private void loadAnalitic() {
@@ -64,7 +60,7 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
             return;
         }
         showProgress(true);
-        attemptLoadAnaliticTask = new AttemptLoadAnaliticTask(dbHelper, this);
+        attemptLoadAnaliticTask = new AttemptLoadAnaliticTask(this);
         attemptLoadAnaliticTask.execute((Void) null);
     }
 

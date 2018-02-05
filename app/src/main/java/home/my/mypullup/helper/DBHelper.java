@@ -11,28 +11,24 @@ import home.my.mypullup.obj.Attempt;
 import java.util.ArrayList;
 import java.util.List;
 
-import static home.my.mypullup.fragment.EnterResultTab.DATABASE_VERSION;
-import static home.my.mypullup.fragment.EnterResultTab.DAYS_AGO;
-import static home.my.mypullup.fragment.EnterResultTab.TABLE;
+import static home.my.mypullup.TabActivity.*;
 
 public class DBHelper extends SQLiteOpenHelper {
+    private static DBHelper sInstance;
 
     private SQLiteDatabase db;
 
-    public DBHelper(Context context) {
+    private DBHelper(Context context) {
         super(context, Utils.getApplicationName(context), null, DATABASE_VERSION);
     }
 
     public static synchronized DBHelper getInstance(Context context) {
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null) {
-            sInstance = new PostsDatabaseHelper(context.getApplicationContext());
+            sInstance = new DBHelper(context.getApplicationContext());
         }
+        sInstance.setDB(sInstance.getWritableDatabase());
         return sInstance;
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -66,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void setDB(SQLiteDatabase db) {
+    private void setDB(SQLiteDatabase db) {
         this.db = db;
     }
 

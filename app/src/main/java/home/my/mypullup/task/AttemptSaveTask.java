@@ -6,11 +6,9 @@ import home.my.mypullup.obj.Attempt;
 
 public class AttemptSaveTask extends AsyncTask<Attempt, Void, Void> {
     private final AsyncResponseEnter delegate;
-    private final DBHelper dbHelper;
 
-    public AttemptSaveTask(DBHelper dbHelper, AsyncResponseEnter delegate) {
+    public AttemptSaveTask(AsyncResponseEnter delegate) {
         this.delegate = delegate;
-        this.dbHelper = dbHelper;
     }
 
     @Override
@@ -21,7 +19,7 @@ public class AttemptSaveTask extends AsyncTask<Attempt, Void, Void> {
 
     @Override
     protected Void doInBackground(Attempt... attempts) {
-        dbHelper.addAttempt(attempts[0]);
+        DBHelper.getInstance(delegate.getContext()).addAttempt(attempts[0]);
         return null;
     }
 }

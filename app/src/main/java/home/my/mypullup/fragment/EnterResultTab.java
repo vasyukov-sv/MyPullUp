@@ -14,23 +14,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import home.my.mypullup.R;
-import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.AttemptSaveTask;
 
+import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
 import static java.util.Optional.ofNullable;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EnterResultTab extends Fragment implements AsyncResponseEnter {
-    public static final int DATABASE_VERSION = 3;
-    public static final String TABLE = "tScore";
-    public static final int DAYS_AGO = 10;
-    private static final int MAX_VALUE_ATTEMPT = 12;
+
     private AttemptSaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
 
@@ -40,7 +34,6 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
     private EditText mEvening2;
 
     private View mProgressView;
-
 
 
     public EnterResultTab() {
@@ -64,8 +57,6 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
 
-        dbHelper = new DBHelper(getActivity());
-        dbHelper.setDB(dbHelper.getWritableDatabase());
         loadAttempt();
     }
 
@@ -74,7 +65,7 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
             return;
         }
         showProgress(true);
-        attemptLoadTask = new AttemptLoadTask(dbHelper, this);
+        attemptLoadTask = new AttemptLoadTask(this);
         attemptLoadTask.execute((Void) null);
     }
 
@@ -129,7 +120,7 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            attemptSaveTask = new AttemptSaveTask(dbHelper, this);
+            attemptSaveTask = new AttemptSaveTask(this);
             Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
             attemptSaveTask.execute(attempt);
         }

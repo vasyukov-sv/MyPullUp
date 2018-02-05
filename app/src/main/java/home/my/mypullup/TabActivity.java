@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import home.my.mypullup.helper.DBHelper;
 
 public class TabActivity extends AppCompatActivity {
-    private static  DBHelper dbHelper =new DBHelper(getActivity());;
+    public static final int DATABASE_VERSION = 3;
+    public static final String TABLE = "tScore";
+    public static final int DAYS_AGO = 10;
+    public static final int MAX_VALUE_ATTEMPT = 12;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,5 +25,4 @@ public class TabActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
-
 }
