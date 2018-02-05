@@ -26,7 +26,7 @@ import static java.util.Optional.ofNullable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EnterResult extends Fragment implements AsyncResponseEnter {
+public class EnterResultTab extends Fragment implements AsyncResponseEnter {
     public static final int DATABASE_VERSION = 3;
     public static final String TABLE = "tScore";
     public static final int DAYS_AGO = 10;
@@ -41,9 +41,9 @@ public class EnterResult extends Fragment implements AsyncResponseEnter {
 
     private View mProgressView;
 
-    private DBHelper dbHelper;
 
-    public EnterResult() {
+
+    public EnterResultTab() {
 
     }
 
@@ -148,7 +148,7 @@ public class EnterResult extends Fragment implements AsyncResponseEnter {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.enter_result, container, false);
     }
 
     @Override

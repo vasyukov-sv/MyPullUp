@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import home.my.mypullup.helper.DBHelper;
 
 public class TabActivity extends AppCompatActivity {
-
+    private static  DBHelper dbHelper =new DBHelper(getActivity());;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import home.my.mypullup.fragment.EnterResult;
-import home.my.mypullup.fragment.Graph;
-import home.my.mypullup.fragment.LastResult;
+import home.my.mypullup.fragment.AnaliticTab;
+import home.my.mypullup.fragment.EnterResultTab;
+import home.my.mypullup.fragment.GraphTab;
 
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -27,11 +27,11 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new EnterResult();
+                return new EnterResultTab();
             case 1:
-                return new LastResult();
+                return new AnaliticTab();
             case 2:
-                return new Graph();
+                return new GraphTab();
             default:
                 return null;
         }

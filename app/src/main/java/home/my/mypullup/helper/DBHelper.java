@@ -11,9 +11,9 @@ import home.my.mypullup.obj.Attempt;
 import java.util.ArrayList;
 import java.util.List;
 
-import static home.my.mypullup.fragment.EnterResult.DATABASE_VERSION;
-import static home.my.mypullup.fragment.EnterResult.DAYS_AGO;
-import static home.my.mypullup.fragment.EnterResult.TABLE;
+import static home.my.mypullup.fragment.EnterResultTab.DATABASE_VERSION;
+import static home.my.mypullup.fragment.EnterResultTab.DAYS_AGO;
+import static home.my.mypullup.fragment.EnterResultTab.TABLE;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -22,6 +22,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, Utils.getApplicationName(context), null, DATABASE_VERSION);
     }
+
+    public static synchronized DBHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new PostsDatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

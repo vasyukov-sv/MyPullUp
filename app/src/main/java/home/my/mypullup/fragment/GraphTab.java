@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import home.my.mypullup.R;
 
-public class Graph extends Fragment {
-    public Graph() {
+public class GraphTab extends Fragment {
+    public GraphTab() {
     }
 
     @Override

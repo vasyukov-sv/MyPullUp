@@ -2,39 +2,43 @@ package home.my.mypullup.task;
 
 import android.os.AsyncTask;
 import home.my.mypullup.helper.DBHelper;
+import home.my.mypullup.obj.Analitic;
 import home.my.mypullup.obj.Attempt;
 
 import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
+import static java.util.OptionalLong.of;
 
-public class AttemptLoadAnaliticTask extends AsyncTask<Void, Void, String> {
+public class AttemptLoadAnaliticTask extends AsyncTask<Void, Void, Analitic> {
     private final DBHelper dbHelper;
-    private final AsyncResponseEnter delegate;
+    private final AsyncResponseAnalitic delegate;
 
-    public AttemptLoadAnaliticTask(DBHelper dbHelper, AsyncResponseEnter delegate) {
+    public AttemptLoadAnaliticTask(DBHelper dbHelper, AsyncResponseAnalitic delegate) {
         this.dbHelper = dbHelper;
         this.delegate = delegate;
     }
 
     private static String apply(Attempt attempt) {
         int sumAttempt = attempt.getMorning1() + attempt.getMorning2() + attempt.getEvening1() + attempt.getEvening2();
-        return String.format("%s-%s-%s-%s" + System.lineSeparator(),
+        return String.format("%s-%s-%s-%s  %d" + System.lineSeparator(),
                 ofNullable(attempt.getMorning1().toString()).orElse("0"),
                 ofNullable(attempt.getMorning2().toString()).orElse("0"),
                 ofNullable(attempt.getEvening1().toString()).orElse("0"),
-                ofNullable(attempt.getEvening2().toString()).orElse("0")
+                ofNullable(attempt.getEvening2().toString()).orElse("0"),
+                of(sumAttempt).orElse(0)
         );
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(Analitic result) {
         super.onPostExecute(result);
-//        delegate.onLoadAnalitics(result);
+        delegate.onLoadAnalitic(result);
     }
 
     @Override
-    protected String doInBackground(Void... voids) {
-        return dbHelper.getLastAttempts().stream().map(AttemptLoadAnaliticTask::apply).collect(Collectors.joining());
+    protected Analitic doInBackground(Void... voids) {
+        dbHelper.getLastAttempts().stream().map(AttemptLoadAnaliticTask::apply).collect(Collectors.joining());
+        return null;
     }
 }
