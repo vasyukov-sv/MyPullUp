@@ -87,7 +87,14 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         while (!cursor.isAfterLast()) {
-            attempts.add(new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")), cursor.getInt(cursor.getColumnIndex("morning2")), cursor.getInt(cursor.getColumnIndex("evening1")), cursor.getInt(cursor.getColumnIndex("evening2"))));
+            attempts.add(new Attempt(
+                    cursor.getInt(cursor.getColumnIndex("morning1")),
+                    cursor.getInt(cursor.getColumnIndex("morning2")),
+                    cursor.getInt(cursor.getColumnIndex("evening1")),
+                    cursor.getInt(cursor.getColumnIndex("evening2")),
+                    cursor.getString(cursor.getColumnIndex("date"))
+                    )
+            );
             cursor.moveToNext();
         }
         cursor.close();

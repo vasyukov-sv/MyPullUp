@@ -19,4 +19,12 @@ public class Utils {
         int stringId = applicationInfo.labelRes;
         return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
     }
+
+    public static String doubleToString(Double value) {
+        return value != null ? Double.toString(value) : "";
+    }
+
+    public static String integerToString(Integer value) {
+        return value != null ? Integer.toString(value) : "";
+    }
 }

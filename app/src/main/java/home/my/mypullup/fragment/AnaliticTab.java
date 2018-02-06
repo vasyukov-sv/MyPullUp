@@ -12,10 +12,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import home.my.mypullup.R;
 import home.my.mypullup.obj.Analitic;
+import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseAnalitic;
 import home.my.mypullup.task.AttemptLoadAnaliticTask;
 
+import java.util.stream.Collectors;
+
+import static home.my.mypullup.helper.Utils.doubleToString;
+import static home.my.mypullup.helper.Utils.integerToString;
 import static java.util.Optional.ofNullable;
+import static java.util.OptionalLong.of;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +45,11 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
         // Required empty public constructor
     }
 
+    private static String apply(Attempt attempt) {
+        int sumAttempt = attempt.getMorning1() + attempt.getMorning2() + attempt.getEvening1() + attempt.getEvening2();
+        return String.format("%s:  %s - %s - %s - %s    %d" + System.lineSeparator(), attempt.getHumanDate(), ofNullable(attempt.getMorning1().toString()).orElse("0"), ofNullable(attempt.getMorning2().toString()).orElse("0"), ofNullable(attempt.getEvening1().toString()).orElse("0"), ofNullable(attempt.getEvening2().toString()).orElse("0"), of(sumAttempt).orElse(0));
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -52,14 +63,14 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
 
         lastAttempts = (TextView) getView().findViewById(R.id.lastattempts);
 
-//        loadAnalitic();
+        loadAnalitic();
     }
 
     private void loadAnalitic() {
         if (attemptLoadAnaliticTask != null) {
             return;
         }
-        showProgress(true);
+//        showProgress(true);
         attemptLoadAnaliticTask = new AttemptLoadAnaliticTask(this);
         attemptLoadAnaliticTask.execute((Void) null);
     }
@@ -83,16 +94,17 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
     @Override
     public void onLoadAnalitic(Analitic analitic) {
         if (analitic != null) {
-            avgWeek.setText(String.format("%s", ofNullable(analitic.getAvgWeek().toString()).orElse("")));
-            avgMonth.setText(String.format("%s", ofNullable(analitic.getAvgMonth().toString()).orElse("")));
-            avgAll.setText(String.format("%s", ofNullable(analitic.getAvgAll().toString()).orElse("")));
-            maxWeek.setText(String.format("%s", ofNullable(analitic.getMaxWeek().toString()).orElse("")));
-            maxMonth.setText(String.format("%s", ofNullable(analitic.getMaxMonth().toString()).orElse("")));
-            maxAll.setText(String.format("%s", ofNullable(analitic.getMaxAll().toString()).orElse("")));
+            avgWeek.setText(doubleToString(analitic.getAvgWeek()));
+            avgMonth.setText(doubleToString(analitic.getAvgMonth()));
+            avgAll.setText(doubleToString(analitic.getAvgAll()));
 
-            lastAttempts.setText(String.format("%s", ofNullable(analitic.getAttemptList().toString()).orElse("")));
+            maxWeek.setText(integerToString(analitic.getMaxWeek()));
+            maxMonth.setText(integerToString(analitic.getMaxMonth()));
+            maxAll.setText(integerToString(analitic.getMaxAll()));
+
+            lastAttempts.setText(analitic.getAttemptList().stream().map(AnaliticTab::apply).collect(Collectors.joining()));
         }
         attemptLoadAnaliticTask = null;
-        showProgress(false);
+//        showProgress(false);
     }
 }
