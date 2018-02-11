@@ -1,8 +1,6 @@
 package home.my.mypullup.fragment;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import home.my.mypullup.R;
+import home.my.mypullup.helper.ProgressView;
 import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseEnter;
@@ -25,38 +24,33 @@ import static java.util.Optional.ofNullable;
 
 public class EnterResultTab extends Fragment implements AsyncResponseEnter {
 
+    private ProgressView progressView;
     private AttemptSaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
-
     private EditText mMorning1;
     private EditText mMorning2;
     private EditText mEvening1;
     private EditText mEvening2;
 
-    private View mProgressView;
-
-
     public EnterResultTab() {
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mMorning1 = (EditText) getView().findViewById(R.id.morning1);
-        mMorning2 = (EditText) getView().findViewById(R.id.morning2);
-        mEvening1 = (EditText) getView().findViewById(R.id.evening1);
-        mEvening2 = (EditText) getView().findViewById(R.id.evening2);
+
+        mMorning1 = (EditText) view.findViewById(R.id.morning1);
+        mMorning2 = (EditText) view.findViewById(R.id.morning2);
+        mEvening1 = (EditText) view.findViewById(R.id.evening1);
+        mEvening2 = (EditText) view.findViewById(R.id.evening2);
         Utils.setMaxValue(MAX_VALUE_ATTEMPT, new EditText[]{mMorning1, mMorning2, mEvening1, mEvening2});
 
-        getView().findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(true));
-        getView().findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(false));
-
-        mProgressView = getView().findViewById(R.id.save_progress);
+        view.findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(true));
+        view.findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(false));
 
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
-
+        progressView = ProgressView.getInstance(this);
         loadAttempt();
     }
 
@@ -64,7 +58,7 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         if (attemptLoadTask != null) {
             return;
         }
-        showProgress(true);
+        progressView.showProgress(true);
         attemptLoadTask = new AttemptLoadTask(this);
         attemptLoadTask.execute((Void) null);
     }
@@ -119,22 +113,11 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            progressView.showProgress(true);
             attemptSaveTask = new AttemptSaveTask(this);
             Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
             attemptSaveTask.execute(attempt);
         }
-    }
-
-    private void showProgress(final boolean show) {
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
     }
 
     @Override
@@ -151,12 +134,12 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
             mEvening2.setText(String.format("%s", ofNullable(attempt.getEvening2().toString()).orElse("")));
         }
         attemptLoadTask = null;
-        showProgress(false);
+        progressView.showProgress(false);
     }
 
     @Override
     public void onSaveAttempt() {
         attemptSaveTask = null;
-        showProgress(false);
+        progressView.showProgress(false);
     }
 }
