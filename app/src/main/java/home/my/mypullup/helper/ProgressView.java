@@ -9,7 +9,7 @@ import home.my.mypullup.task.AsyncResponse;
 
 public class ProgressView {
     private static ProgressView sInstance;
-    private View mProgressView;
+    private final View mProgressView;
     private AsyncResponse task;
 
     private ProgressView(View mProgressView) {

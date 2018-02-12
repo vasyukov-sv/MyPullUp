@@ -1,8 +1,6 @@
 package home.my.mypullup.fragment;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import home.my.mypullup.R;
+import home.my.mypullup.helper.ProgressView;
 import home.my.mypullup.obj.Analitic;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseAnalitic;
@@ -28,6 +27,8 @@ import static java.util.OptionalLong.of;
  */
 public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
 
+    private ProgressView progressView;
+
     private TextView avgWeek;
     private TextView avgMonth;
     private TextView avgAll;
@@ -39,10 +40,7 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
     private TextView lastAttempts;
     private AttemptLoadAnaliticTask attemptLoadAnaliticTask = null;
 
-    private View mProgressView;
-
     public AnaliticTab() {
-        // Required empty public constructor
     }
 
     private static String apply(Attempt attempt) {
@@ -54,15 +52,15 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        avgWeek = (TextView) getView().findViewById(R.id.avgweek);
-        avgMonth = (TextView) getView().findViewById(R.id.avgmonth);
-        avgAll = (TextView) getView().findViewById(R.id.avgall);
-        maxWeek = (TextView) getView().findViewById(R.id.maxweek);
-        maxMonth = (TextView) getView().findViewById(R.id.maxmonth);
-        maxAll = (TextView) getView().findViewById(R.id.maxall);
+        avgWeek = (TextView) view.findViewById(R.id.avgweek);
+        avgMonth = (TextView) view.findViewById(R.id.avgmonth);
+        avgAll = (TextView) view.findViewById(R.id.avgall);
+        maxWeek = (TextView) view.findViewById(R.id.maxweek);
+        maxMonth = (TextView) view.findViewById(R.id.maxmonth);
+        maxAll = (TextView) view.findViewById(R.id.maxall);
 
-        lastAttempts = (TextView) getView().findViewById(R.id.lastattempts);
-
+        lastAttempts = (TextView) view.findViewById(R.id.lastattempts);
+        progressView = ProgressView.getInstance(this);
         loadAnalitic();
     }
 
@@ -70,7 +68,7 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
         if (attemptLoadAnaliticTask != null) {
             return;
         }
-//        showProgress(true);
+        progressView.showProgress(true);
         attemptLoadAnaliticTask = new AttemptLoadAnaliticTask(this);
         attemptLoadAnaliticTask.execute((Void) null);
     }
@@ -78,17 +76,6 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.analitic, container, false);
-    }
-
-    private void showProgress(final boolean show) {
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
     }
 
     @Override
@@ -105,6 +92,6 @@ public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
             lastAttempts.setText(analitic.getAttemptList().stream().map(AnaliticTab::apply).collect(Collectors.joining()));
         }
         attemptLoadAnaliticTask = null;
-//        showProgress(false);
+        progressView.showProgress(false);
     }
 }

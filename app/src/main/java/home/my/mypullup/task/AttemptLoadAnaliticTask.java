@@ -20,6 +20,6 @@ public class AttemptLoadAnaliticTask extends AsyncTask<Void, Void, Analitic> {
 
     @Override
     protected Analitic doInBackground(Void... voids) {
-        return new Analitic().setAttemptList(DBHelper.getInstance(delegate.getContext()).getLastAttempts()).setAvgAll(20d);
+        return DBHelper.getInstance(delegate.getContext()).getAnalitic();
     }
 }

@@ -6,19 +6,10 @@ import home.my.mypullup.obj.Attempt;
 
 public class AttemptLoadTask extends AsyncTask<Void, Void, Attempt> {
 
-    public AsyncResponseEnter getDelegate() {
-        return delegate;
-    }
-
     private final AsyncResponseEnter delegate;
 
     public AttemptLoadTask(AsyncResponseEnter delegate) {
         this.delegate = delegate;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override

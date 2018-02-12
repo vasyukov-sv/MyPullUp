@@ -9,8 +9,8 @@ import home.my.mypullup.fragment.EnterResultTab;
 import home.my.mypullup.fragment.GraphTab;
 
 
-public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
-    private String tabTitles[];
+class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+    private final String[] tabTitles;
 
     MyFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);

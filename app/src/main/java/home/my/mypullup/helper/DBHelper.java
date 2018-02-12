@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
+import home.my.mypullup.obj.Analitic;
 import home.my.mypullup.obj.Attempt;
 
 import java.util.ArrayList;
@@ -56,7 +58,6 @@ public class DBHelper extends SQLiteOpenHelper {
             cv.put("evening2", attempt.getEvening2());
         }
         cv.put("date", attempt.getDate());
-
         if (db.insertWithOnConflict(TABLE, null, cv, SQLiteDatabase.CONFLICT_IGNORE) == -1) {
             db.update(TABLE, cv, "date =?", new String[]{attempt.getDate()});
         }
@@ -78,28 +79,49 @@ public class DBHelper extends SQLiteOpenHelper {
         return attempt;
     }
 
-    public List<Attempt> getLastAttempts() {
-
+    private List<Attempt> getLastAttempts() {
         List<Attempt> attempts = new ArrayList<>();
         Cursor cursor = db.query(TABLE, null, "date > date('now', '-" + DAYS_AGO + " day','localtime')", null, null, null, "date");
         if (cursor == null || !cursor.moveToFirst()) {
             return null;
         }
-
         while (!cursor.isAfterLast()) {
-            attempts.add(new Attempt(
-                    cursor.getInt(cursor.getColumnIndex("morning1")),
-                    cursor.getInt(cursor.getColumnIndex("morning2")),
-                    cursor.getInt(cursor.getColumnIndex("evening1")),
-                    cursor.getInt(cursor.getColumnIndex("evening2")),
-                    cursor.getString(cursor.getColumnIndex("date"))
-                    )
-            );
+            attempts.add(new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")), cursor.getInt(cursor.getColumnIndex("morning2")), cursor.getInt(cursor.getColumnIndex("evening1")), cursor.getInt(cursor.getColumnIndex("evening2")), cursor.getString(cursor.getColumnIndex("date"))));
             cursor.moveToNext();
         }
         cursor.close();
-
         return attempts;
+    }
+
+    public Analitic getAnalitic() {
+        Pair<Double, Integer> pairWeek = getAvgAndMax(Period.WEEK);
+        Pair<Double, Integer> pairMonth = getAvgAndMax(Period.MONTH);
+        Pair<Double, Integer> pairAll = getAvgAndMax(Period.ALL);
+        return new Analitic().setAttemptList(getLastAttempts()).setAvgWeek(pairWeek.first).setMaxWeek(pairWeek.second).setAvgMonth(pairMonth.first).setMaxMonth(pairMonth.second).setAvgAll(pairAll.first).setMaxAll(pairAll.second);
+    }
+
+    private Pair<Double, Integer> getAvgAndMax(Period period) {
+        String selection;
+        switch (period) {
+            case WEEK:
+                selection = "date >= date('now','-7 days','weekday 1')";
+                break;
+            case MONTH:
+                selection = " date >= date('now','start of month')";
+                break;
+            case ALL:
+            default:
+                selection = "";
+        }
+        String[] columns = new String[]{"avg(morning1+morning2+evening1+evening2) as avgperiod", "max(morning1+morning2+evening1+evening2) as maxperiod"};
+
+        Cursor cursor = db.query(TABLE, columns, selection, null, null, null, null);
+        if (cursor == null || !cursor.moveToFirst()) {
+            return null;
+        }
+        Pair<Double, Integer> pair = new Pair<>(cursor.getDouble(cursor.getColumnIndex("avgperiod")), cursor.getInt(cursor.getColumnIndex("maxperiod")));
+        cursor.close();
+        return pair;
     }
 
 }

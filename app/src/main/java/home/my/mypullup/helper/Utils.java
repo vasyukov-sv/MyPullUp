@@ -6,6 +6,7 @@ import android.text.InputFilter;
 import android.widget.EditText;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class Utils {
 
@@ -21,7 +22,7 @@ public class Utils {
     }
 
     public static String doubleToString(Double value) {
-        return value != null ? Double.toString(value) : "";
+        return value != null ? String.format(Locale.getDefault(),"%.2f", value) : "";
     }
 
     public static String integerToString(Integer value) {
