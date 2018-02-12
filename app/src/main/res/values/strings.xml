@@ -8,4 +8,10 @@
     <string name="tab_enter">Ввод</string>
     <string name="last10">Результаты</string>
     <string name="graph">График</string>
+    <string name="avgweek">Ср.неделя</string>
+    <string name="avgmonth">Ср.месяц</string>
+    <string name="avgall">Ср.</string>
+    <string name="maxweek">Макс.неделя</string>
+    <string name="maxmonth">Макс.месяц</string>
+    <string name="maxall">Макс.</string>
 </resources>

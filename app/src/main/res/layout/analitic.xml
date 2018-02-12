@@ -11,7 +11,7 @@
               android:weightSum="100">
     <TextView
             android:id="@+id/lastattempts"
-            android:layout_weight="80"
+            android:layout_weight="70"
             android:gravity="start"
             android:layout_height="0dp"
             android:layout_width="match_parent"
@@ -20,6 +20,37 @@
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="@color/colorPrimary"/>
+    <LinearLayout android:layout_weight="5" android:layout_height="0dp" android:layout_width="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:baselineAligned="false">
+            <TextView
+                    android:layout_weight="33"
+                    android:gravity="start"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="@string/avgweek"
+                    android:textAlignment="textStart"/>
+            <TextView
+                    android:layout_weight="33"
+                    android:gravity="start"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="@string/avgmonth"
+                    android:textAlignment="textStart"/>
+            <TextView
+                    android:layout_weight="34"
+                    android:gravity="start"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="@string/avgall"
+                    android:textAlignment="textStart"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout android:layout_weight="10" android:layout_height="0dp" android:layout_width="match_parent">
 
@@ -49,6 +80,38 @@
                     android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
+                    android:textAlignment="textStart"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:layout_weight="5" android:layout_height="0dp" android:layout_width="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:baselineAligned="false">
+            <TextView
+                    android:layout_weight="33"
+                    android:gravity="start"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="@string/maxweek"
+                    android:textAlignment="textStart"/>
+            <TextView
+                    android:layout_weight="33"
+                    android:gravity="start"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="@string/maxmonth"
+                    android:textAlignment="textStart"/>
+            <TextView
+                    android:layout_weight="34"
+                    android:gravity="start"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="@string/maxall"
                     android:textAlignment="textStart"/>
         </LinearLayout>
     </LinearLayout>
