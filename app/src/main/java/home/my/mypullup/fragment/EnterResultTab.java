@@ -1,6 +1,7 @@
 package home.my.mypullup.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import home.my.mypullup.R;
@@ -45,8 +47,8 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         mEvening2 = (EditText) view.findViewById(R.id.evening2);
         Utils.setMaxValue(MAX_VALUE_ATTEMPT, new EditText[]{mMorning1, mMorning2, mEvening1, mEvening2});
 
-        view.findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(true));
-        view.findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(false));
+        view.findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(v,true));
+        view.findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(v,false));
 
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
@@ -71,10 +73,10 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         int i = v.getId();
         switch (i) {
             case R.id.morning2:
-                saveRow(true);
+                saveRow(v, true);
                 break;
             case R.id.evening2:
-                saveRow(false);
+                saveRow(v, false);
                 break;
             default:
                 return false;
@@ -82,7 +84,10 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         return true;
     }
 
-    private void saveRow(boolean isMorning) {
+    private void saveRow(View v, boolean isMorning) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
         if (attemptSaveTask != null) {
             return;
         }
