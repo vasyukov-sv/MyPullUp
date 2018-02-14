@@ -4,7 +4,6 @@ package home.my.mypullup.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import home.my.mypullup.task.AttemptSaveTask;
 import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
 import static java.util.Optional.ofNullable;
 
-public class EnterResultTab extends Fragment implements AsyncResponseEnter {
+public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
 
     private ProgressView progressView;
     private AttemptSaveTask attemptSaveTask = null;
@@ -47,8 +46,8 @@ public class EnterResultTab extends Fragment implements AsyncResponseEnter {
         mEvening2 = (EditText) view.findViewById(R.id.evening2);
         Utils.setMaxValue(MAX_VALUE_ATTEMPT, new EditText[]{mMorning1, mMorning2, mEvening1, mEvening2});
 
-        view.findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(v,true));
-        view.findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(v,false));
+        view.findViewById(R.id.save_morning_button).setOnClickListener(v -> saveRow(v, true));
+        view.findViewById(R.id.save_evening_button).setOnClickListener(v -> saveRow(v, false));
 
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));

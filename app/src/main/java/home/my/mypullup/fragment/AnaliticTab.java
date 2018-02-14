@@ -25,7 +25,7 @@ import static java.util.OptionalLong.of;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AnaliticTab extends Fragment implements AsyncResponseAnalitic {
+public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
 
     private ProgressView progressView;
 
