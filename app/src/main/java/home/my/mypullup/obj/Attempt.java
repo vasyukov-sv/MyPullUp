@@ -16,7 +16,8 @@ public class Attempt {
     private final String date;
 
     public Attempt(Integer morning1, Integer morning2, Integer evening1, Integer evening2) {
-        this.morning1 = morning1;
+        this.morning1 = (morning1 != null && morning1 == 0) ? null : morning1;
+
         this.morning2 = morning2;
         this.evening1 = evening1;
         this.evening2 = evening2;

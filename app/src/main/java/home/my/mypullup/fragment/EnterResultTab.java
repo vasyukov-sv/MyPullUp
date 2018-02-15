@@ -20,8 +20,9 @@ import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.AttemptSaveTask;
 
+import java.util.Optional;
+
 import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
-import static java.util.Optional.ofNullable;
 
 public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
 
@@ -132,13 +133,19 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     @Override
     public void onLoadAttempt(Attempt attempt) {
         if (attempt != null) {
-            mMorning1.setText(String.format("%s", ofNullable(attempt.getMorning1().toString()).orElse("")));
-            mMorning2.setText(String.format("%s", ofNullable(attempt.getMorning2().toString()).orElse("")));
-            mEvening1.setText(String.format("%s", ofNullable(attempt.getEvening1().toString()).orElse("")));
-            mEvening2.setText(String.format("%s", ofNullable(attempt.getEvening2().toString()).orElse("")));
+            setEditText(mMorning1, attempt.getMorning1());
+            setEditText(mMorning2, attempt.getMorning2());
+            setEditText(mEvening1, attempt.getEvening1());
+            setEditText(mEvening2, attempt.getEvening2());
         }
         attemptLoadTask = null;
         progressView.showProgress(false);
+    }
+
+    private void setEditText(EditText editText, Integer value) {
+        if (Optional.ofNullable(value).orElse(0) != 0) {
+            editText.setText(value.toString());
+        }
     }
 
     @Override
