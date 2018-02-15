@@ -60,7 +60,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
         maxAll = (TextView) view.findViewById(R.id.maxall);
 
         lastAttempts = (TextView) view.findViewById(R.id.lastattempts);
-        progressView = ProgressView.getInstance(this);
+        progressView = new ProgressView(this);
         loadAnalitic();
     }
 

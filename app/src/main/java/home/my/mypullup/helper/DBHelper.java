@@ -97,7 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Pair<Double, Integer> pairWeek = getAvgAndMax(Period.WEEK);
         Pair<Double, Integer> pairMonth = getAvgAndMax(Period.MONTH);
         Pair<Double, Integer> pairAll = getAvgAndMax(Period.ALL);
-        return new Analitic().setAttemptList(getLastAttempts()).setAvgWeek(pairWeek.first).setMaxWeek(pairWeek.second).setAvgMonth(pairMonth.first).setMaxMonth(pairMonth.second).setAvgAll(pairAll.first).setMaxAll(pairAll.second);
+        return new Analitic().setAttemptList(getLastAttempts()).setAvgWeek((pairWeek) != null ? pairWeek.first : null).setMaxWeek(pairWeek != null ? pairWeek.second : null).setAvgMonth(pairMonth != null ? pairMonth.first : null).setMaxMonth(pairMonth.second).setAvgAll(pairAll.first).setMaxAll(pairAll.second);
     }
 
     private Pair<Double, Integer> getAvgAndMax(Period period) {

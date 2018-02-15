@@ -51,7 +51,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
 
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
-        progressView = ProgressView.getInstance(this);
+        progressView = new ProgressView(this);
         loadAttempt();
     }
 
