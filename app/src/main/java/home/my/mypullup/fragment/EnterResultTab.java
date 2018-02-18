@@ -18,7 +18,7 @@ import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
-import home.my.mypullup.task.AttemptSaveTask;
+import home.my.mypullup.task.SaveTask;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
 public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
 
     private ProgressView progressView;
-    private AttemptSaveTask attemptSaveTask = null;
+    private SaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
     private EditText mMorning1;
     private EditText mMorning2;
@@ -119,7 +119,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             progressView.showProgress(true);
-            attemptSaveTask = new AttemptSaveTask(this);
+            attemptSaveTask = new SaveTask(this);
             Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
             attemptSaveTask.execute(attempt);
         }
