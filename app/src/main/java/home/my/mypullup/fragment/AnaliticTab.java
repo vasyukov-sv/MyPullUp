@@ -41,6 +41,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
     private AttemptLoadAnaliticTask attemptLoadAnaliticTask = null;
 
     public AnaliticTab() {
+        this.getId();
     }
 
     private static String apply(Attempt attempt) {
@@ -51,7 +52,6 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         avgWeek = (TextView) view.findViewById(R.id.avgweek);
         avgMonth = (TextView) view.findViewById(R.id.avgmonth);
         avgAll = (TextView) view.findViewById(R.id.avgall);
@@ -64,7 +64,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
         loadAnalitic();
     }
 
-    private void loadAnalitic() {
+    public void loadAnalitic() {
         if (attemptLoadAnaliticTask != null) {
             return;
         }

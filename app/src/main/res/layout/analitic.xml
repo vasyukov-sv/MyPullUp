@@ -8,7 +8,9 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              android:weightSum="100">
+              android:weightSum="100"
+              android:id="@+id/analiticfragment">
+
     <TextView
             android:id="@+id/lastattempts"
             android:layout_weight="70"

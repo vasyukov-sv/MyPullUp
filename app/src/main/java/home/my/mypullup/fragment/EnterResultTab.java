@@ -152,5 +152,11 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     public void onSaveAttempt() {
         attemptSaveTask = null;
         progressView.showProgress(false);
+        android.support.v4.app.FragmentManager manager = getFragmentManager();
+//        (TextView) view.findViewById(R.id.lastattempts);
+        AnaliticTab fragment = (AnaliticTab) manager.getFragments().stream().filter(sc -> sc instanceof AnaliticTab).findFirst().orElse(null);
+        if (fragment != null) {
+            fragment.loadAnalitic();
+        }
     }
 }
