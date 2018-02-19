@@ -39,7 +39,7 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
     private DataPoint[] generateData(List<Attempt> attempts) {
         DataPoint[] values = new DataPoint[attempts.size()];
         for (int i = 0; i < attempts.size(); i++) {
-            DataPoint v = new DataPoint(i, attempts.get(i).getSumAttemt());
+            DataPoint v = new DataPoint(i, attempts.get(i).getSumAttempt());
             values[i] = v;
         }
         return values;

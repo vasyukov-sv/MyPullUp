@@ -7,7 +7,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import static android.content.ContentValues.TAG;
 
-@SuppressWarnings("WeakerAccess")
 public class CommonTab extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

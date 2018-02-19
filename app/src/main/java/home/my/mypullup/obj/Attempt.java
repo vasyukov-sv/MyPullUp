@@ -60,7 +60,7 @@ public class Attempt {
         return "";
     }
 
-    public int getSumAttemt() {
+    public int getSumAttempt() {
         return this.getMorning1() + this.getMorning2() + this.getEvening1() + this.getEvening2();
     }
 
