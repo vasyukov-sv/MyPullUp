@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import home.my.mypullup.R;
-import home.my.mypullup.helper.ProgressView;
 import home.my.mypullup.helper.Utils;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseEnter;
@@ -26,7 +25,7 @@ import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
 
 public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
 
-    private ProgressView progressView;
+
     private SaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
     private EditText mMorning1;
@@ -52,7 +51,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
 
         mMorning2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
         mEvening2.setOnEditorActionListener((v, actionId, event) -> onEditorAction(v, actionId));
-        progressView = new ProgressView(this);
+
         loadAttempt();
     }
 
@@ -60,7 +59,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
         if (attemptLoadTask != null) {
             return;
         }
-        progressView.showProgress(true);
+
         attemptLoadTask = new AttemptLoadTask(this);
         attemptLoadTask.execute((Void) null);
     }
@@ -118,7 +117,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            progressView.showProgress(true);
+
             attemptSaveTask = new SaveTask(this);
             Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
             attemptSaveTask.execute(attempt);
@@ -139,7 +138,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
             setEditText(mEvening2, attempt.getEvening2());
         }
         attemptLoadTask = null;
-        progressView.showProgress(false);
+
     }
 
     private void setEditText(EditText editText, Integer value) {
@@ -151,9 +150,8 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     @Override
     public void onSaveAttempt() {
         attemptSaveTask = null;
-        progressView.showProgress(false);
+
         android.support.v4.app.FragmentManager manager = getFragmentManager();
-//        (TextView) view.findViewById(R.id.lastattempts);
         AnaliticTab fragment = (AnaliticTab) manager.getFragments().stream().filter(sc -> sc instanceof AnaliticTab).findFirst().orElse(null);
         if (fragment != null) {
             fragment.loadAnalitic();

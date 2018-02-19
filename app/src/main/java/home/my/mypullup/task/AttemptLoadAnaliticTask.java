@@ -1,14 +1,14 @@
 package home.my.mypullup.task;
 
-import android.os.AsyncTask;
 import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.obj.Analitic;
 
-public class AttemptLoadAnaliticTask extends AsyncTask<Void, Void, Analitic> {
+public class AttemptLoadAnaliticTask extends CommonTask<Void, Void, Analitic> {
 
     private final AsyncResponseAnalitic delegate;
 
     public AttemptLoadAnaliticTask(AsyncResponseAnalitic delegate) {
+        super(delegate.getContext());
         this.delegate = delegate;
     }
 

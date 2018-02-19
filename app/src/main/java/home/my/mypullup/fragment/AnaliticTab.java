@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import home.my.mypullup.R;
-import home.my.mypullup.helper.ProgressView;
 import home.my.mypullup.obj.Analitic;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseAnalitic;
@@ -27,7 +26,6 @@ import static java.util.OptionalLong.of;
  */
 public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
 
-    private ProgressView progressView;
 
     private TextView avgWeek;
     private TextView avgMonth;
@@ -58,7 +56,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
         maxAll = (TextView) view.findViewById(R.id.maxall);
 
         lastAttempts = (TextView) view.findViewById(R.id.lastattempts);
-        progressView = new ProgressView(this);
+
         loadAnalitic();
     }
 
@@ -66,7 +64,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
         if (attemptLoadAnaliticTask != null) {
             return;
         }
-        progressView.showProgress(true);
+
         attemptLoadAnaliticTask = new AttemptLoadAnaliticTask(this);
         attemptLoadAnaliticTask.execute((Void) null);
     }
@@ -90,6 +88,6 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
             lastAttempts.setText(analitic.getAttemptList().stream().map(AnaliticTab::apply).collect(Collectors.joining()));
         }
         attemptLoadAnaliticTask = null;
-        progressView.showProgress(false);
+
     }
 }

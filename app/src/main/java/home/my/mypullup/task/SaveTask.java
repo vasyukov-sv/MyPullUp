@@ -1,13 +1,13 @@
 package home.my.mypullup.task;
 
-import android.os.AsyncTask;
 import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.obj.Attempt;
 
-public class SaveTask extends AsyncTask<Attempt, Void, Void> {
+public class SaveTask extends CommonTask<Attempt, Void, Void> {
     private final AsyncResponseEnter delegate;
 
     public SaveTask(AsyncResponseEnter delegate) {
+        super(delegate.getContext());
         this.delegate = delegate;
     }
 

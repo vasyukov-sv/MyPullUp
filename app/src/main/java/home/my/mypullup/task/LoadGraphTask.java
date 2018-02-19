@@ -1,16 +1,16 @@
 package home.my.mypullup.task;
 
-import android.os.AsyncTask;
 import home.my.mypullup.helper.DBHelper;
 import home.my.mypullup.obj.Attempt;
 
 import java.util.List;
 
-public class LoadGraphTask extends AsyncTask<Void, Void, List<Attempt>> {
+public class LoadGraphTask extends CommonTask<Void, Void, List<Attempt>> {
 
     private final AsyncResponseGraph delegate;
 
     public LoadGraphTask(AsyncResponseGraph delegate) {
+        super(delegate.getContext());
         this.delegate = delegate;
     }
 

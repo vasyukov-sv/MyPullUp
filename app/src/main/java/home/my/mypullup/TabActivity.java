@@ -6,9 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 public class TabActivity extends AppCompatActivity {
-    //TODO
-    //2 loading ajax in window
-    // code review
     public static final int DATABASE_VERSION = 3;
     public static final String TABLE = "tScore";
     public static final int DAYS_AGO = 10;

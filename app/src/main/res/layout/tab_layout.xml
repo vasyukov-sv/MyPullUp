@@ -9,16 +9,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"/>
-
-    <!-- Login progress -->
-    <!--android:visibility="gone"-->
-    <!--This view is invisible, and it doesn't take any space for layout purposes.-->
     <ProgressBar
             android:id="@+id/save_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:indeterminate="true"
+            android:backgroundTint="@android:color/white"
+            android:indeterminateTint="@color/colorPrimary"
+            android:layout_marginTop="-10dp"
             android:visibility="gone"/>
 
     <android.support.v4.view.ViewPager

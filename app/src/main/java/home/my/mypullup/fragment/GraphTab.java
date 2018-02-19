@@ -9,7 +9,6 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import home.my.mypullup.R;
-import home.my.mypullup.helper.ProgressView;
 import home.my.mypullup.obj.Attempt;
 import home.my.mypullup.task.AsyncResponseGraph;
 import home.my.mypullup.task.LoadGraphTask;
@@ -18,7 +17,6 @@ import java.util.List;
 
 public class GraphTab extends CommonTab implements AsyncResponseGraph {
     private LoadGraphTask loadGraphTask = null;
-    private ProgressView progressView;
     private GraphView view;
 
     public GraphTab() {
@@ -28,7 +26,7 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = (GraphView) view;
-        progressView = new ProgressView(this);
+
         loadGraph();
 
     }
@@ -51,7 +49,7 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
         if (loadGraphTask != null) {
             return;
         }
-        progressView.showProgress(true);
+
 
         loadGraphTask = new LoadGraphTask(this);
         loadGraphTask.execute((Void) null);
@@ -74,7 +72,7 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
         view.getViewport().setScalable(true);
         view.addSeries(series);
         loadGraphTask = null;
-        progressView.showProgress(false);
+
 
     }
 }
