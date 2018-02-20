@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import home.my.mypullup.fragment.AnaliticTab;
-import home.my.mypullup.fragment.EnterResultTab;
+import home.my.mypullup.fragment.EnterTab;
 import home.my.mypullup.fragment.GraphTab;
 
 
@@ -26,7 +26,7 @@ class MyFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new EnterResultTab();
+                return new EnterTab();
             case 1:
                 return new AnaliticTab();
             case 2:

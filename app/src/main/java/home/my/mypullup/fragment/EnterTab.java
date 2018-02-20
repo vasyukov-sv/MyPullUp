@@ -4,6 +4,7 @@ package home.my.mypullup.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +20,9 @@ import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.SaveTask;
 
-import java.util.Optional;
-
 import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
 
-public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
-
-
+public class EnterTab extends CommonTab implements AsyncResponseEnter {
     private SaveTask attemptSaveTask = null;
     private AttemptLoadTask attemptLoadTask = null;
     private EditText mMorning1;
@@ -33,7 +30,7 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     private EditText mEvening1;
     private EditText mEvening2;
 
-    public EnterResultTab() {
+    public EnterTab() {
     }
 
     @Override
@@ -56,21 +53,16 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     }
 
     private void loadAttempt() {
-        if (attemptLoadTask != null) {
-            return;
+        if (attemptLoadTask == null) {
+            attemptLoadTask = (AttemptLoadTask) new AttemptLoadTask(this).execute((Void) null);
         }
-
-        attemptLoadTask = new AttemptLoadTask(this);
-        attemptLoadTask.execute((Void) null);
     }
-
 
     private boolean onEditorAction(TextView v, int actionId) {
         if (actionId != EditorInfo.IME_ACTION_DONE) {
             return false;
         }
-        int i = v.getId();
-        switch (i) {
+        switch (v.getId()) {
             case R.id.morning2:
                 saveRow(v, true);
                 break;
@@ -84,12 +76,12 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     }
 
     private void saveRow(View v, boolean isMorning) {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
         if (attemptSaveTask != null) {
             return;
         }
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         EditText attempt1 = isMorning ? mMorning1 : mEvening1;
         EditText attempt2 = isMorning ? mMorning2 : mEvening2;
@@ -97,31 +89,25 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
         String value1 = attempt1.getText().toString();
         String value2 = attempt2.getText().toString();
 
-        boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(value1)) {
             attempt1.setError(getString(R.string.error_field_required));
             focusView = attempt1;
-            cancel = true;
         }
 
         if (TextUtils.isEmpty(value2)) {
             attempt2.setError(getString(R.string.error_field_required));
             focusView = attempt2;
-            cancel = true;
         }
 
-        if (cancel) {
+        if (focusView != null) {
             focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-
-            attemptSaveTask = new SaveTask(this);
-            Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
-            attemptSaveTask.execute(attempt);
+            return;
         }
+
+        Attempt attempt = isMorning ? new Attempt(Integer.parseInt(value1), Integer.parseInt(value2), null, null) : new Attempt(null, null, Integer.parseInt(value1), Integer.parseInt(value2));
+        attemptSaveTask = (SaveTask) new SaveTask(this).execute(attempt);
     }
 
     @Override
@@ -132,26 +118,18 @@ public class EnterResultTab extends CommonTab implements AsyncResponseEnter {
     @Override
     public void onLoadAttempt(Attempt attempt) {
         if (attempt != null) {
-            setEditText(mMorning1, attempt.getMorning1());
-            setEditText(mMorning2, attempt.getMorning2());
-            setEditText(mEvening1, attempt.getEvening1());
-            setEditText(mEvening2, attempt.getEvening2());
+            mMorning1.setText(attempt.getMorning1().toString());
+            mMorning2.setText(attempt.getMorning2().toString());
+            mEvening1.setText(attempt.getEvening1().toString());
+            mEvening2.setText(attempt.getEvening2().toString());
         }
         attemptLoadTask = null;
-
-    }
-
-    private void setEditText(EditText editText, Integer value) {
-        if (Optional.ofNullable(value).orElse(0) != 0) {
-            editText.setText(value.toString());
-        }
     }
 
     @Override
     public void onSaveAttempt() {
         attemptSaveTask = null;
-
-        android.support.v4.app.FragmentManager manager = getFragmentManager();
+        FragmentManager manager = getFragmentManager();
         AnaliticTab fragment = (AnaliticTab) manager.getFragments().stream().filter(sc -> sc instanceof AnaliticTab).findFirst().orElse(null);
         if (fragment != null) {
             fragment.loadAnalitic();

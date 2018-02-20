@@ -1,9 +1,7 @@
 package home.my.mypullup.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +16,7 @@ import java.util.stream.Collectors;
 
 import static home.my.mypullup.helper.Utils.doubleToString;
 import static home.my.mypullup.helper.Utils.integerToString;
-import static java.util.Optional.ofNullable;
-import static java.util.OptionalLong.of;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
     private TextView avgWeek;
     private TextView avgMonth;
@@ -40,7 +33,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
     }
 
     private static String apply(Attempt attempt) {
-        return String.format("%s:  %s - %s - %s - %s    %d" + System.lineSeparator(), attempt.getHumanDate(), ofNullable(attempt.getMorning1().toString()).orElse("0"), ofNullable(attempt.getMorning2().toString()).orElse("0"), ofNullable(attempt.getEvening1().toString()).orElse("0"), ofNullable(attempt.getEvening2().toString()).orElse("0"), of(attempt.getSumAttempt()).orElse(0));
+        return String.format("%s:  %d - %d - %d - %d    %d" + System.lineSeparator(), attempt.getHumanDate(), attempt.getMorning1(), attempt.getMorning2(), attempt.getEvening1(), attempt.getEvening2(), attempt.getSumAttempt());
     }
 
     @Override
@@ -52,19 +45,14 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
         maxWeek = (TextView) view.findViewById(R.id.maxweek);
         maxMonth = (TextView) view.findViewById(R.id.maxmonth);
         maxAll = (TextView) view.findViewById(R.id.maxall);
-
         lastAttempts = (TextView) view.findViewById(R.id.lastattempts);
-
         loadAnalitic();
     }
 
     void loadAnalitic() {
-        if (attemptLoadAnaliticTask != null) {
-            return;
+        if (attemptLoadAnaliticTask == null) {
+            attemptLoadAnaliticTask = (AttemptLoadAnaliticTask) new AttemptLoadAnaliticTask(this).execute((Void) null);
         }
-
-        attemptLoadAnaliticTask = new AttemptLoadAnaliticTask(this);
-        attemptLoadAnaliticTask.execute((Void) null);
     }
 
     @Override
@@ -86,6 +74,5 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
             lastAttempts.setText(analitic.getAttemptList().stream().map(AnaliticTab::apply).collect(Collectors.joining()));
         }
         attemptLoadAnaliticTask = null;
-
     }
 }

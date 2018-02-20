@@ -26,9 +26,7 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = (GraphView) view;
-
         loadGraph();
-
     }
 
     @Override
@@ -46,14 +44,9 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
     }
 
     private void loadGraph() {
-        if (loadGraphTask != null) {
-            return;
+        if (loadGraphTask == null) {
+            loadGraphTask = (LoadGraphTask) new LoadGraphTask(this).execute((Void) null);
         }
-
-
-        loadGraphTask = new LoadGraphTask(this);
-        loadGraphTask.execute((Void) null);
-
     }
 
     @Override
