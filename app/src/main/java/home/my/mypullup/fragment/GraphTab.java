@@ -14,6 +14,7 @@ import home.my.mypullup.task.AsyncResponseGraph;
 import home.my.mypullup.task.LoadGraphTask;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class GraphTab extends CommonTab implements AsyncResponseGraph {
     private LoadGraphTask loadGraphTask = null;
@@ -36,10 +37,7 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
 
     private DataPoint[] generateData(List<Attempt> attempts) {
         DataPoint[] values = new DataPoint[attempts.size()];
-        for (int i = 0; i < attempts.size(); i++) {
-            DataPoint v = new DataPoint(i, attempts.get(i).getSumAttempt());
-            values[i] = v;
-        }
+        IntStream.range(0, attempts.size()).forEach(i -> values[i] = new DataPoint(i, attempts.get(i).getSumAttempt()));
         return values;
     }
 
@@ -61,11 +59,8 @@ public class GraphTab extends CommonTab implements AsyncResponseGraph {
         view.getViewport().setMinX(0);
         view.getViewport().setMaxX(series.getHighestValueX());
 
-        // enable scaling and scrolling
         view.getViewport().setScalable(true);
         view.addSeries(series);
         loadGraphTask = null;
-
-
     }
 }

@@ -4,13 +4,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import home.my.mypullup.R;
-import home.my.mypullup.TabActivity;
+import home.my.mypullup.MainActivity;
 
 public abstract class CommonTask<T, U, V> extends AsyncTask<T, U, V> {
     private final View mProgressView;
 
     CommonTask(Context context) {
-        this.mProgressView = ((TabActivity) context).findViewById(R.id.save_progress);
+        this.mProgressView = ((MainActivity) context).findViewById(R.id.save_progress);
     }
 
     @Override

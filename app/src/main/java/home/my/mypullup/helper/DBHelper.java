@@ -13,7 +13,7 @@ import home.my.mypullup.obj.Attempt;
 import java.util.ArrayList;
 import java.util.List;
 
-import static home.my.mypullup.TabActivity.*;
+import static home.my.mypullup.MainActivity.*;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper sInstance;
@@ -125,6 +125,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<Attempt> getGraph() {
-        return getLastAttempts(60);
+        return getLastAttempts(DAYS_AGO_GRAPH);
     }
 }

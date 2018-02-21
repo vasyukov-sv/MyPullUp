@@ -20,7 +20,7 @@ import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.SaveTask;
 
-import static home.my.mypullup.TabActivity.MAX_VALUE_ATTEMPT;
+import static home.my.mypullup.MainActivity.MAX_VALUE_ATTEMPT;
 
 public class EnterTab extends CommonTab implements AsyncResponseEnter {
     private SaveTask attemptSaveTask = null;
