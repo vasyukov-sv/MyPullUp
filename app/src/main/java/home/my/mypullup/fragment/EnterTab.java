@@ -4,7 +4,6 @@ package home.my.mypullup.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,8 @@ import home.my.mypullup.task.AsyncResponseEnter;
 import home.my.mypullup.task.AttemptLoadTask;
 import home.my.mypullup.task.SaveTask;
 
+import java.util.Locale;
+
 import static home.my.mypullup.MainActivity.MAX_VALUE_ATTEMPT;
 
 public class EnterTab extends CommonTab implements AsyncResponseEnter {
@@ -30,7 +31,15 @@ public class EnterTab extends CommonTab implements AsyncResponseEnter {
     private EditText mEvening1;
     private EditText mEvening2;
 
+    private OnFragmentInteractionListener mListener;
+
     public EnterTab() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
@@ -118,10 +127,12 @@ public class EnterTab extends CommonTab implements AsyncResponseEnter {
     @Override
     public void onLoadAttempt(Attempt attempt) {
         if (attempt != null) {
-            mMorning1.setText(attempt.getMorning1().toString());
-            mMorning2.setText(attempt.getMorning2().toString());
-            mEvening1.setText(attempt.getEvening1().toString());
-            mEvening2.setText(attempt.getEvening2().toString());
+            Locale locale = Locale.getDefault();
+            String format = "%d";
+            mMorning1.setText(String.format(locale, format, attempt.getMorning1()));
+            mMorning2.setText(String.format(locale, format, attempt.getMorning2()));
+            mEvening1.setText(String.format(locale, format, attempt.getEvening1()));
+            mEvening2.setText(String.format(locale, format, attempt.getEvening2()));
         }
         attemptLoadTask = null;
     }
@@ -129,10 +140,6 @@ public class EnterTab extends CommonTab implements AsyncResponseEnter {
     @Override
     public void onSaveAttempt() {
         attemptSaveTask = null;
-        FragmentManager manager = getFragmentManager();
-        AnaliticTab fragment = (AnaliticTab) manager.getFragments().stream().filter(sc -> sc instanceof AnaliticTab).findFirst().orElse(null);
-        if (fragment != null) {
-            fragment.loadAnalitic();
-        }
+        mListener.onLoadAnalitic();
     }
 }

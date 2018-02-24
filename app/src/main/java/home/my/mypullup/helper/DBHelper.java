@@ -73,7 +73,6 @@ public class DBHelper extends SQLiteOpenHelper {
             return null;
         }
 
-
         Attempt attempt = new Attempt(cursor.getInt(cursor.getColumnIndex("morning1")), cursor.getInt(cursor.getColumnIndex("morning2")), cursor.getInt(cursor.getColumnIndex("evening1")), cursor.getInt(cursor.getColumnIndex("evening2")));
         cursor.close();
         return attempt;
@@ -97,7 +96,14 @@ public class DBHelper extends SQLiteOpenHelper {
         Pair<Double, Integer> pairWeek = getAvgAndMax(Period.WEEK);
         Pair<Double, Integer> pairMonth = getAvgAndMax(Period.MONTH);
         Pair<Double, Integer> pairAll = getAvgAndMax(Period.ALL);
-        return new Analitic().setAttemptList(getLastAttempts(DAYS_AGO)).setAvgWeek((pairWeek) != null ? pairWeek.first : null).setMaxWeek(pairWeek != null ? pairWeek.second : null).setAvgMonth(pairMonth != null ? pairMonth.first : null).setMaxMonth(pairMonth != null ? pairMonth.second : null).setAvgAll(pairAll != null ? pairAll.first : null).setMaxAll(pairAll.second);
+        return new Analitic()
+                .setAttemptList(getLastAttempts(DAYS_AGO))
+                .setAvgWeek((pairWeek) != null ? pairWeek.first : null)
+                .setMaxWeek(pairWeek != null ? pairWeek.second : null)
+                .setAvgMonth(pairMonth != null ? pairMonth.first : null)
+                .setMaxMonth(pairMonth != null ? pairMonth.second : null)
+                .setAvgAll(pairAll != null ? pairAll.first : null)
+                .setMaxAll(pairAll != null ? pairAll.second : null);
     }
 
     private Pair<Double, Integer> getAvgAndMax(Period period) {

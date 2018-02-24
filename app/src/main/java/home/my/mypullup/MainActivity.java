@@ -2,8 +2,10 @@ package home.my.mypullup;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import home.my.mypullup.fragment.AnaliticTab;
 import home.my.mypullup.fragment.OnFragmentInteractionListener;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -30,9 +32,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     @Override
     public void onLoadAnalitic() {
-//        getFragmentManager().findFragmentByTag();
-//        getSupportFragmentManager
-//        Fragment view = (Fragment) getView().findViewById(R.id.analiticfragment);
-//        view.setText(item);
+        FragmentManager manager = getSupportFragmentManager();
+        AnaliticTab fragment = (AnaliticTab) manager.getFragments().stream().filter(sc -> sc instanceof AnaliticTab).findFirst().orElse(null);
+        if (fragment != null) {
+            fragment.loadAnalitic();
+        }
     }
 }

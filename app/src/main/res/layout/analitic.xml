@@ -22,131 +22,91 @@
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:background="@color/colorPrimary"/>
-    <LinearLayout android:layout_weight="5" android:layout_height="0dp" android:layout_width="match_parent">
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                android:baselineAligned="false">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:layout_weight="30"
+                 android:layout_height="0dp"
+                 android:layout_width="match_parent">
+        <TableRow android:paddingTop="@dimen/activity_vertical_margin">
             <TextView
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="@string/avgweek"
                     android:textAlignment="textStart"/>
             <TextView
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="@string/avgmonth"
                     android:textAlignment="textStart"/>
             <TextView
                     android:layout_weight="34"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="@string/avgall"
                     android:textAlignment="textStart"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout android:layout_weight="10" android:layout_height="0dp" android:layout_width="match_parent">
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                android:baselineAligned="false">
+        </TableRow>
+        <TableRow android:paddingTop="@dimen/activity_vertical_margin">
             <TextView
                     android:id="@+id/avgweek"
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:textAlignment="textStart"/>
             <TextView
                     android:id="@+id/avgmonth"
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:textAlignment="textStart"/>
             <TextView
                     android:id="@+id/avgall"
                     android:layout_weight="34"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:textAlignment="textStart"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout android:layout_weight="5" android:layout_height="0dp" android:layout_width="match_parent">
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                android:baselineAligned="false">
+        </TableRow>
+        <TableRow android:paddingTop="@dimen/activity_vertical_margin">
             <TextView
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="@string/maxweek"
                     android:textAlignment="textStart"/>
             <TextView
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="@string/maxmonth"
                     android:textAlignment="textStart"/>
             <TextView
                     android:layout_weight="34"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="@string/maxall"
                     android:textAlignment="textStart"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout android:layout_weight="10" android:layout_height="0dp" android:layout_width="match_parent">
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="100"
-                android:baselineAligned="false">
+        </TableRow>
+        <TableRow android:paddingTop="@dimen/activity_vertical_margin">
             <TextView
                     android:id="@+id/maxweek"
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:textAlignment="textStart"/>
             <TextView
                     android:id="@+id/maxmonth"
                     android:layout_weight="33"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:textAlignment="textStart"/>
             <TextView
                     android:id="@+id/maxall"
                     android:layout_weight="34"
-                    android:gravity="start"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:textAlignment="textStart"/>
-        </LinearLayout>
-    </LinearLayout>
-
+        </TableRow>
+    </TableLayout>
 </LinearLayout>

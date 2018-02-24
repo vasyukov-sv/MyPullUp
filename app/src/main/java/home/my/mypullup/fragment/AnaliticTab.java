@@ -33,7 +33,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
     }
 
     private static String apply(Attempt attempt) {
-        return String.format("%s:  %d - %d - %d - %d    %d" + System.lineSeparator(), attempt.getHumanDate(), attempt.getMorning1(), attempt.getMorning2(), attempt.getEvening1(), attempt.getEvening2(), attempt.getSumAttempt());
+        return String.format("%s:  %-3d - %-3d - %-3d - %-3d  %-3d" + System.lineSeparator(), attempt.getHumanDate(), attempt.getMorning1(), attempt.getMorning2(), attempt.getEvening1(), attempt.getEvening2(), attempt.getSumAttempt());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
         loadAnalitic();
     }
 
-    void loadAnalitic() {
+    public void loadAnalitic() {
         if (attemptLoadAnaliticTask == null) {
             attemptLoadAnaliticTask = (AttemptLoadAnaliticTask) new AttemptLoadAnaliticTask(this).execute((Void) null);
         }

@@ -2,6 +2,6 @@ package home.my.mypullup.task;
 
 import android.content.Context;
 
-public interface AsyncResponse {
+interface AsyncResponse {
     Context getContext();
 }
