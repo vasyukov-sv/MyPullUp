@@ -127,12 +127,17 @@ public class EnterTab extends CommonTab implements AsyncResponseEnter {
     @Override
     public void onLoadAttempt(Attempt attempt) {
         if (attempt != null) {
+            int morning1 = attempt.getMorning1();
+            int morning2 = attempt.getMorning2();
+            int evening1 = attempt.getEvening1();
+            int evening2 = attempt.getEvening2();
+
             Locale locale = Locale.getDefault();
             String format = "%d";
-            mMorning1.setText(String.format(locale, format, attempt.getMorning1()));
-            mMorning2.setText(String.format(locale, format, attempt.getMorning2()));
-            mEvening1.setText(String.format(locale, format, attempt.getEvening1()));
-            mEvening2.setText(String.format(locale, format, attempt.getEvening2()));
+            mMorning1.setText(morning1 == 0 ? "" : String.format(locale, format, morning1));
+            mMorning2.setText(morning2 == 0 ? "" : String.format(locale, format, morning2));
+            mEvening1.setText(evening1 == 0 ? "" : String.format(locale, format, evening1));
+            mEvening2.setText(evening2 == 0 ? "" : String.format(locale, format, evening2));
         }
         attemptLoadTask = null;
     }
