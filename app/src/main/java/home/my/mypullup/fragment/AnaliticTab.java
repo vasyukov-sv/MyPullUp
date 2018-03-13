@@ -70,8 +70,9 @@ public class AnaliticTab extends CommonTab implements AsyncResponseAnalitic {
             maxWeek.setText(integerToString(analitic.getMaxWeek()));
             maxMonth.setText(integerToString(analitic.getMaxMonth()));
             maxAll.setText(integerToString(analitic.getMaxAll()));
-
-            lastAttempts.setText(analitic.getAttemptList().stream().map(AnaliticTab::apply).collect(Collectors.joining()));
+            if (analitic.getAttemptList() != null) {
+                lastAttempts.setText(analitic.getAttemptList().stream().map(AnaliticTab::apply).collect(Collectors.joining()));
+            }
         }
         attemptLoadAnaliticTask = null;
     }
